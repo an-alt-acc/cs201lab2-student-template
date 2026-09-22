@@ -1,7 +1,5 @@
 import java.util.*;
 
-import org.w3c.dom.Node;
-
 public class SinglyLinkedList<E extends Comparable<E>> {
     private Node<E> head = null;
     private Node<E> tail = null;
@@ -138,8 +136,10 @@ public class SinglyLinkedList<E extends Comparable<E>> {
         }
         
         do {
-            OrderedNodesEntry<E> minPtr = orderedNodes.removeFirst();
-            OrderedNodesEntry<E> maxPtr = orderedNodes.removeLast();
+            OrderedNodesEntry<E> minPtr = orderedNodes.first();
+            OrderedNodesEntry<E> maxPtr = orderedNodes.last();
+            orderedNodes.remove(minPtr);
+            orderedNodes.remove(maxPtr);
             
             Node<E> min = minPtr.getNode();
             Node<E> minPred = swappedNodes.getOrDefault(minPtr.getPred(), minPtr.getPred());
