@@ -101,8 +101,45 @@ public class SinglyLinkedList<E extends Comparable<E>> {
 
     // write your codes here
     public void swap(){
-        
+        if (size <= 1) return;
 
+        HashSet<E> visited = new HashSet<>(size);
+        while (visited.size() < size - 1) {
+            Node<E> min = null;
+            Node<E> minPred = null;
+            Node<E> max = null;
+            Node<E> maxPred = null;
+            Node<E> ptr = head;
+            Node<E> ptrPred = null;
+            while (ptr != null) {
+                if (visited.contains(ptr.getElement())) {
+                    ptrPred = ptr;
+                    ptr = ptr.getNext();
+                    continue;
+                }
+                if (min == null || ptr.getElement().compareTo(min.getElement()) < 0) {
+                    min = ptr;
+                    minPred = ptrPred;
+                }
+                if (max == null || ptr.getElement().compareTo(max.getElement()) > 0) {
+                    max = ptr;
+                    maxPred = ptrPred;
+                }
+                ptrPred = ptr;
+                ptr = ptr.getNext();
+            }
+
+            Node<E> minNext = min.getNext();
+            Node<E> maxNext = max.getNext();
+            if (maxPred == null) head = min; else maxPred.setNext(min);
+            min.setNext(maxNext == min ? max : maxNext);
+            if (maxNext == null) tail = min;
+            if (minPred == null) head = max; else minPred.setNext(max);
+            max.setNext(minNext == max ? min : minNext);
+            if (minNext == null) tail = max;
+            visited.add(min.getElement());
+            visited.add(max.getElement());
+        }
     }
    
 }
